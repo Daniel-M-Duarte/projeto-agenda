@@ -33,6 +33,13 @@ class Login {
     this.valida();
     if (this.errors.length > 0) return;
 
+    this.user = await LoginModel.findOne({ email: this.body.email });
+
+    if (this.user) {
+      this.errors.push("E-mail já cadastrado");
+      return;
+    }
+
     try {
         this.user = await LoginModel.create(this.body);
     } catch (err) {
