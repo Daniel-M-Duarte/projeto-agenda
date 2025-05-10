@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcryptjs = require("bcryptjs");
 
 const LoginSchema = new mongoose.Schema({
   email: { type: String, required: true },
@@ -41,14 +42,14 @@ class Login {
     }
 
     try {
-        this.user = await LoginModel.create(this.body);
+      const salt = bcryptjs.genSaltSync();
+      this.body.password = bcryptjs.hashSync(this.body.password, salt);
+      this.user = await LoginModel.create(this.body);
     } catch (err) {
-        console.log(err)
+      console.log(err);
     }
 
     if (this.errors.length > 0) return;
-
-    
   }
 
   async userExists() {
@@ -69,7 +70,7 @@ class Login {
     }
 
     if (!this.body.name || !this.body.surname || !this.body.phone) {
-      this.errors.push("Faltando dado obrigatório")
+      this.errors.push("Faltando dado obrigatório");
     }
   }
 
