@@ -13,7 +13,7 @@ exports.register = async function (req, res) {
     if (login.errors.length > 0) {
       req.flash("errors", login.errors);
       req.session.save(function () {
-        return res.redirect("/login");
+        return res.redirect("/login/index");
       });
       return;
     }
@@ -21,7 +21,7 @@ exports.register = async function (req, res) {
     req.flash("success", "Usuário criado com sucesso");
 
     req.session.save(function () {
-      return res.redirect("/login");
+      return res.redirect("/login/index");
     });
     return;
   } catch (e) {
