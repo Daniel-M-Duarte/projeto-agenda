@@ -20,12 +20,18 @@ class Login {
   }
 
   async login() {
-    this.valida();
+    this.validaLogin();
     if (this.errors.length > 0) return;
     this.user = await LoginModel.findOne({ email: this.body.email });
 
     if (!this.user) {
-      this.errors.push("Usuário não existe.");
+      this.errors.push("Usuário ou senha incorretos");
+      return;
+    }
+
+    if(!bcryptjs.compareSync(this.body.password, this.user.password)) {
+      this.errors.push('Usuário ou senha incorretos');
+      this.user = null;
       return;
     }
   }
@@ -46,7 +52,6 @@ class Login {
       this.body.password = bcryptjs.hashSync(this.body.password, salt);
       this.user = await LoginModel.create(this.body);
     } catch (err) {
-      console.log(err);
     }
 
     if (this.errors.length > 0) return;
@@ -71,6 +76,19 @@ class Login {
 
     if (!this.body.name || !this.body.surname || !this.body.phone) {
       this.errors.push("Faltando dado obrigatório");
+    }
+  }
+
+  validaLogin() {
+    this.cleanUp();
+
+    // Validação
+    // O e-mail precisa ser válido
+    if (!validator.isEmail(this.body.email))
+      this.errors.push("E-mail inválido");
+
+    if (this.body.password.length < 3 || this.body.password.length > 50) {
+      this.errors.push("A senha precisa ter entre 3 e 50 caracteres.");
     }
   }
 
