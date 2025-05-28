@@ -21,7 +21,6 @@ exports.register = async function (req, res) {
     }
 
     req.flash("success", "Contato criado com sucesso");
-    console.log(contato.contato._id)
     res.redirect(`/contato/index/${contato.contato._id}`);
     return;
   } catch (e) {
