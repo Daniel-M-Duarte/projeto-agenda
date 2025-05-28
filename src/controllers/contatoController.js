@@ -1,7 +1,9 @@
 const Contato = require("../models/ContatoModel");
 
 exports.index = (req, res, next) => {
-  res.render("contato");
+  res.render("contato", {
+    contato: {},
+  });
   next();
 };
 
@@ -19,7 +21,8 @@ exports.register = async function (req, res) {
     }
 
     req.flash("success", "Contato criado com sucesso");
-    res.redirect("/contato/index");
+    console.log(contato.contato._id)
+    res.redirect(`/contato/index/${contato.contato._id}`);
     return;
   } catch (e) {
     return res.render("404");
@@ -29,4 +32,21 @@ exports.register = async function (req, res) {
 exports.logout = function (req, res) {
   req.session.destroy();
   res.redirect("/login/index");
+};
+
+exports.editIndex = async function (req, res) {
+  try {
+    const { id } = req.params;
+    if (!req.params) return res.render("404");
+
+    const contato = await Contato.buscaPorId(id);
+
+    res.render("contato", { contato });
+  } catch (error) {
+    console.error(error);
+    // É uma boa prática verificar se o erro é um CastError para dar uma resposta mais específica
+    if (error.name === "CastError") {
+      return res.status(400).send("ID de contato inválido");
+    }
+  }
 };

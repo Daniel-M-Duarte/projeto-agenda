@@ -6,7 +6,7 @@ const ContatoSchema = new mongoose.Schema({
   name: { type: String, required: false },
   surname: { type: String, required: false },
   phone: { type: String, required: false },
-  criadoEm: { type: Date, default: Date.now,}
+  criadoEm: { type: Date, default: Date.now },
 });
 
 const ContatoModel = mongoose.model("Contato", ContatoSchema);
@@ -15,15 +15,21 @@ class Contato {
   constructor(body) {
     this.body = body;
     this.errors = [];
-    this.user = null;
+    this.contato = null;
+  }
+
+  static async buscaPorId(id) {
+    // if (typeof id !== "string") return;
+
+    return await ContatoModel.findById(id);
   }
 
   async Contato() {
     this.validaContato();
     if (this.errors.length > 0) return;
-    this.user = await ContatoModel.findOne({ email: this.body.email });
+    this.contato = await ContatoModel.findOne({ email: this.body.email });
 
-    if (!this.user) {
+    if (!this.contato) {
       this.errors.push("Usuário ou senha incorretos");
       return;
     }
@@ -33,23 +39,23 @@ class Contato {
     this.valida();
     if (this.errors.length > 0) return;
 
-    this.user = await ContatoModel.findOne({ email: this.body.email });
+    this.contato = await ContatoModel.findOne({ email: this.body.email });
 
-    if (this.user) {
+    if (this.contato) {
       this.errors.push("E-mail já cadastrado");
       return;
     }
 
     try {
-      this.user = await ContatoModel.create(this.body);
+      this.contato = await ContatoModel.create(this.body);
     } catch (err) {}
 
     if (this.errors.length > 0) return;
   }
 
-  async userExists() {
-    this.user = await ContatoModel.findOne({ email: this.body.email });
-    if (this.user) this.errors.push("Usuário já existe.");
+  async contatoExists() {
+    this.contato = await ContatoModel.findOne({ email: this.body.email });
+    if (this.contato) this.errors.push("Usuário já existe.");
   }
 
   valida() {

@@ -27,8 +27,9 @@ const sessionOptions = session({
   }
 });
 app.set("views", path.resolve(__dirname, "src", "view"));
-app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "src", "view")));
 
+app.set("view engine", "ejs");
 
 app.use(sessionOptions);
 app.use(middlewareGlobal);
