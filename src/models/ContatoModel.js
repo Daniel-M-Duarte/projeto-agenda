@@ -85,6 +85,16 @@ class Contato {
       this.errors.push("E-mail inválido");
   }
 
+  async edit(id) {
+    if (typeof id !== "string") return;
+
+    this.valida();
+
+    if (this.errors.length > 0) return;
+
+    this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
+  }
+
   cleanUp() {
     for (const key in this.body) {
       if (typeof this.body[key] !== "string") {

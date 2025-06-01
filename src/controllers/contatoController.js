@@ -49,3 +49,30 @@ exports.editIndex = async function (req, res) {
     }
   }
 };
+
+exports.edit = async function (req, res) {
+  try {
+    const { id } = req.params;
+
+    if (!req.params) return res.render("404");
+
+    const contato = new Contato(req.body);
+
+    await contato.edit(id);
+
+    if (contato.errors.length > 0) {
+      req.flash("errors", contato.errors);
+      req.session.save(function () {
+        return res.redirect("/contato/index");
+      });
+    }
+
+    req.flash("success", "Contato editado com sucesso");
+    return res.redirect(`/contato/index/${contato.contato._id}`);
+
+    return;
+  } catch (e) {
+    console.log(e)
+    return res.render("404");
+  }
+};

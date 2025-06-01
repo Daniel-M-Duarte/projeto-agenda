@@ -13,7 +13,12 @@
 
       <%- include('includes/messages') %>
 
-      <form action="/contato/register" method="POST">
+      <% if (contato._id)  { %>
+        <form action="/contato/edit/<%= contato._id %>" method="POST">
+      <% } else   { %>
+        <form action="/contato/register" method="POST">
+      <% }  %>
+
             <div class="form-group my-3">
               <label for="exampleInputName1">Nome</label>
               <input value="<%= contato.name %>"  type="text" class="form-control" name="name" />
@@ -28,7 +33,7 @@
             </div>
             <div class="form-group my-3">
               <label for="exampleInputName1">E-mail</label>
-              <input value="<%=contato.surname%>"type="email" class="form-control" name="email" />
+              <input value="<%=contato.email%>"type="email" class="form-control" name="email" />
             </div>
             
             
