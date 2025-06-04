@@ -65,6 +65,7 @@ exports.edit = async function (req, res) {
       req.session.save(function () {
         return res.redirect("/contato/index");
       });
+      return;
     }
 
     req.flash("success", "Contato editado com sucesso");

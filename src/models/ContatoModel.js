@@ -92,7 +92,9 @@ class Contato {
 
     if (this.errors.length > 0) return;
 
-    this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
+    this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {
+      new: true,
+    });
   }
 
   cleanUp() {
