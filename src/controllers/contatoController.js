@@ -73,7 +73,26 @@ exports.edit = async function (req, res) {
 
     return;
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.render("404");
+  }
+};
+
+exports.delete = async function (req, res) {
+  try {
+    const { id } = req.params;
+    if (!req.params) return res.render("404");
+
+    const contato = await Contato.delete(id);
+
+    if (!contato) return res.render("404");
+
+    req.flash("success", "Contato apagado com sucesso");
+
+    req.session.save(() => res.redirect("/"));
+    return;
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send(error.message);
   }
 };

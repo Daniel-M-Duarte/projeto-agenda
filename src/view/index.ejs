@@ -1,5 +1,5 @@
-<%- include('./includes/header',{title:'Pagina Inicial' })%> 
-<%- include('./includes/nav')%>
+<%- include('./includes/header',{title:'Pagina Inicial' })%> <%-
+include('./includes/nav')%>
 
 <div class="container">
   <div class="row">
@@ -7,25 +7,37 @@
 
     <div class="col-lg-8 my-3">
       <h1 class="text-center">Agenda</h1>
-      <p class="text-center lead">Seus contatos estão abaixo</p>
 
-      <% include(includes/messages) %>
+      <%- include('includes/messages') %> <% if (contatos.length > 0) { %>
+
+      <p class="text-center lead">Seus contatos estão abaixo</p>
 
       <div class="resposive-table my-3">
         <table class="table">
+          <% contatos.forEach(contato => { %>
           <tr>
-            <td>Daniel</td>
-            <td>Maciel Duarte</td>
-            <td>(51) 9999999999</td>
-            <td>d@d.com</td>
+            <td><%= contato.name %></td>
+            <td><%= contato.surname %></td>
+            <td><%= contato.email %></td>
+            <td><%= contato.phone %></td>
+            <td><a href="/contato/index/<%= contato._id %>">Editar</a></td>
+            <td>
+              <a class="text-danger" href="/contato/delete/<%= contato._id %>"
+                >Excluir</a
+              >
+            </td>
+            <% }) %>
           </tr>
         </table>
       </div>
+
+      <% } else { %>
+      <p>Não há contatos para exibir</p>
+      <% }%>
     </div>
 
     <div class="col-lg-2"></div>
   </div>
 </div>
 
-
- <%- include('./includes/footer')%>
+<%- include('./includes/footer')%>

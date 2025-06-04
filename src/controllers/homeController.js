@@ -1,7 +1,6 @@
-exports.checkCsrfError = (err, req, res, next) => {
-  if(err) {
-    return res.render('404');
-  }
+const Contato = require("../models/ContatoModel");
 
-  next();
+exports.index = async (req, res) => {
+  const contatos = await Contato.busca();
+  res.render("index", { contatos });
 };
