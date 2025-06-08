@@ -1,4 +1,6 @@
-Agenda de Contatos
+*Agenda de Contatos*
+
+
 Este projeto é uma Agenda de Contatos completa, projetada para gerenciar suas informações de contato de maneira eficiente e segura. Com um sistema robusto de autenticação de usuários e funcionalidades CRUD (Criar, Ler, Atualizar, Deletar) para gerenciar contatos, você terá suas informações sempre acessíveis e protegidas.Tecnologias Utilizadas
 Backend
 
